@@ -64,15 +64,24 @@ function handleKeydown(e) {
     const inputs = Array.from(row.children);
     const index = inputs.indexOf(input);
 
+    // Cuando se presiona "Enter" y todos los inputs están completos
     if (e.key === "Enter" && inputs.every(input => input.value.length === 1)) {
         validarIntento(inputs.map(input => input.value).join(""), row);
     }
 
-    if (e.key === "Backspace" && index > 0 && input.value === "") {
-        const prevInput = inputs[index - 1];
-        prevInput.focus();
+    // Cuando se presiona "Backspace", y el input está vacío, mueve el foco al anterior
+    if (e.key === "Backspace") {
+        if (input.value === "") {
+            if (index > 0) {
+                const prevInput = inputs[index - 1];
+                prevInput.focus();
+            }
+        } else {
+            input.value = ""; // Borra la letra actual
+        }
     }
 }
+
 
 function validarIntento(intento, row) {
     if (intento.length !== palabraOculta.length) return; // Evita intentos incompletos
